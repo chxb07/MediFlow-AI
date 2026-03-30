@@ -797,9 +797,13 @@ export default function DoctorDashboard() {
                           <FlaskConical className="h-4 w-4 me-2 text-blue-500" />
                           Test Request Analysis (AI)
                         </h3>
-                        <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-[11px] leading-relaxed">
-                          {analysis.clinical_findings_summary}
-                        </div>
+                        <div 
+                          className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs md:text-[13px] leading-relaxed whitespace-pre-wrap font-medium"
+                          dangerouslySetInnerHTML={{
+                            __html: analysis.clinical_findings_summary
+                              .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-blue-600 dark:text-blue-400">$1</span>')
+                          }}
+                        />
                       </div>
                     )}
                   </div>
@@ -914,9 +918,16 @@ export default function DoctorDashboard() {
                       <Zap className="h-4 w-4" />
                       <span className="text-xs font-bold uppercase tracking-wider">Clinical Consultant Analysis</span>
                     </div>
-                    <div className="text-xs leading-relaxed whitespace-pre-wrap text-foreground font-light">
-                      {docAnalysisResult}
-                    </div>
+                    <div 
+                      className="text-sm md:text-[15px] leading-relaxed whitespace-pre-wrap text-foreground/90 font-medium tracking-wide prose-headings:font-display"
+                      dangerouslySetInnerHTML={{
+                        __html: docAnalysisResult
+                          .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-primary">$1</span>')
+                          .replace(/### (.*?)\n/g, '<h3 class="text-base font-bold text-primary mt-4 mb-2">$1</h3>')
+                          .replace(/## (.*?)\n/g, '<h2 class="text-lg font-bold text-primary mt-5 mb-2">$1</h2>')
+                          .replace(/# (.*?)\n/g, '<h1 class="text-xl font-bold text-primary mt-5 mb-2">$1</h1>')
+                      }}
+                    />
                   </motion.div>
                 ) : (
                   <div className="text-center py-8 text-muted-foreground text-xs italic">
