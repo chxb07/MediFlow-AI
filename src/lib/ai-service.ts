@@ -79,7 +79,7 @@ Analyze patient symptoms and provide:
 `;
 
 export async function analyzePatientData(data: PatientData): Promise<PatientAnalysis> {
-  const apiKey = (import.meta as any).env.VITE_GROQ_API_KEY;
+  const apiKey = import.meta.env.VITE_GROQ_API_KEY;
   
   if (!apiKey) {
     console.error("Groq API key not found in environment variables.");
