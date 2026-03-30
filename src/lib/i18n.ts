@@ -1,0 +1,268 @@
+type Lang = 'en' | 'fr' | 'ar';
+
+interface I18nStore {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: (key: string) => string;
+  dir: () => 'ltr' | 'rtl';
+}
+
+const translations: Record<Lang, Record<string, string>> = {
+  en: {
+    'app.name': 'MediFlow AI',
+    'app.tagline': 'Intelligent Healthcare, Simplified',
+    'app.description': 'A next-generation AI-powered healthcare platform connecting patients, doctors, pharmacists, and lab professionals seamlessly.',
+    'nav.home': 'Home',
+    'nav.features': 'Features',
+    'nav.about': 'About',
+    'nav.login': 'Sign In',
+    'nav.register': 'Get Started',
+    'nav.dashboard': 'Dashboard',
+    'nav.logout': 'Sign Out',
+    'landing.hero.title': 'The Future of',
+    'landing.hero.highlight': 'Healthcare',
+    'landing.hero.subtitle': 'AI-powered diagnostics, seamless collaboration, and patient-centered care — all in one platform.',
+    'landing.cta': 'Get Started Free',
+    'landing.cta2': 'Watch Demo',
+    'landing.feature1.title': 'AI-Powered Analysis',
+    'landing.feature1.desc': 'Advanced algorithms assist doctors with diagnostic suggestions and treatment recommendations.',
+    'landing.feature2.title': 'Digital Prescriptions',
+    'landing.feature2.desc': 'Paperless, secure, and instantly available to pharmacists with QR verification.',
+    'landing.feature3.title': 'Lab Integration',
+    'landing.feature3.desc': 'Seamless test ordering and result delivery between doctors and lab technicians.',
+    'landing.feature4.title': 'Multilingual Support',
+    'landing.feature4.desc': 'Full support for English, French, and Arabic with RTL layout.',
+    'auth.login': 'Sign In',
+    'auth.register': 'Create Account',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.name': 'Full Name',
+    'auth.age': 'Age',
+    'auth.role': 'I am a...',
+    'auth.role.patient': 'Patient',
+    'auth.role.doctor': 'Doctor',
+    'auth.role.pharmacist': 'Pharmacist',
+    'auth.role.lab': 'Lab Technician',
+    'auth.role.radiology': 'Radiology Technician',
+    'auth.submit': 'Continue',
+    'auth.switch.login': 'Already have an account?',
+    'auth.switch.register': "Don't have an account?",
+    'dashboard.welcome': 'Welcome back',
+    'dashboard.overview': 'Overview',
+    'dashboard.appointments': 'Appointments',
+    'dashboard.prescriptions': 'Prescriptions',
+    'dashboard.reports': 'Reports',
+    'dashboard.patients': 'Patients',
+    'dashboard.symptoms': 'Symptoms',
+    'dashboard.ai_panel': 'AI Assistant',
+    'dashboard.lab_requests': 'Lab Requests',
+    'dashboard.radiology': 'Radiology',
+    'patient.symptoms.title': 'Describe Your Symptoms',
+    'patient.symptoms.placeholder': 'Tell us how you feel...',
+    'patient.book': 'Book Appointment',
+    'patient.history': 'Medical History',
+    'doctor.patients': 'Patient List',
+    'doctor.ai.title': 'Advanced Medical AI Assistant',
+    'doctor.ai.conditions': 'Possible Medical Considerations',
+    'doctor.ai.steps': 'Suggested Next Steps',
+    'doctor.ai.confidence': 'Confidence Level',
+    'doctor.ai.disclaimer': '⚠️ FOR LICENSED DOCTORS ONLY. Not for final diagnosis or prescriptions. Use cautiously.',
+    'doctor.prescribe': 'Write Prescription',
+    'doctor.request_lab': 'Request Lab Test',
+    'doctor.request_rad': 'Request Radiology',
+    'pharma.prescriptions': 'Pending Prescriptions',
+    'pharma.verify': 'Verify QR',
+    'pharma.confirm': 'Confirm Delivery',
+    'lab.pending': 'Pending Tests',
+    'lab.upload': 'Upload Results',
+    'lab.attach': 'Attach to Patient',
+    'stats.patients': 'Total Patients',
+    'stats.appointments': 'Appointments Today',
+    'stats.prescriptions': 'Active Prescriptions',
+    'stats.tests': 'Pending Tests',
+  },
+  fr: {
+    'app.name': 'MediFlow AI',
+    'app.tagline': 'Santé Intelligente, Simplifiée',
+    'app.description': 'Une plateforme de santé de nouvelle génération alimentée par l\'IA connectant patients, médecins, pharmaciens et professionnels de laboratoire.',
+    'nav.home': 'Accueil',
+    'nav.features': 'Fonctionnalités',
+    'nav.about': 'À propos',
+    'nav.login': 'Connexion',
+    'nav.register': 'Commencer',
+    'nav.dashboard': 'Tableau de bord',
+    'nav.logout': 'Déconnexion',
+    'landing.hero.title': 'Le Futur de la',
+    'landing.hero.highlight': 'Santé',
+    'landing.hero.subtitle': 'Diagnostics alimentés par l\'IA, collaboration fluide et soins centrés sur le patient — tout en une seule plateforme.',
+    'landing.cta': 'Commencer Gratuitement',
+    'landing.cta2': 'Voir la Démo',
+    'landing.feature1.title': 'Analyse IA',
+    'landing.feature1.desc': 'Des algorithmes avancés aident les médecins avec des suggestions de diagnostic.',
+    'landing.feature2.title': 'Ordonnances Numériques',
+    'landing.feature2.desc': 'Sans papier, sécurisées et disponibles instantanément avec vérification QR.',
+    'landing.feature3.title': 'Intégration Labo',
+    'landing.feature3.desc': 'Commande de tests et livraison de résultats entre médecins et techniciens.',
+    'landing.feature4.title': 'Support Multilingue',
+    'landing.feature4.desc': 'Support complet pour l\'anglais, le français et l\'arabe avec mise en page RTL.',
+    'auth.login': 'Connexion',
+    'auth.register': 'Créer un compte',
+    'auth.email': 'Email',
+    'auth.password': 'Mot de passe',
+    'auth.name': 'Nom complet',
+    'auth.age': 'Âge',
+    'auth.role': 'Je suis...',
+    'auth.role.patient': 'Patient',
+    'auth.role.doctor': 'Médecin',
+    'auth.role.pharmacist': 'Pharmacien',
+    'auth.role.lab': 'Technicien de labo',
+    'auth.role.radiology': 'Technicien en radiologie',
+    'auth.submit': 'Continuer',
+    'auth.switch.login': 'Vous avez déjà un compte?',
+    'auth.switch.register': 'Pas encore de compte?',
+    'dashboard.welcome': 'Bienvenue',
+    'dashboard.overview': 'Aperçu',
+    'dashboard.appointments': 'Rendez-vous',
+    'dashboard.prescriptions': 'Ordonnances',
+    'dashboard.reports': 'Rapports',
+    'dashboard.patients': 'Patients',
+    'dashboard.symptoms': 'Symptômes',
+    'dashboard.ai_panel': 'Assistant IA',
+    'dashboard.lab_requests': 'Demandes labo',
+    'dashboard.radiology': 'Radiologie',
+    'patient.symptoms.title': 'Décrivez vos symptômes',
+    'patient.symptoms.placeholder': 'Dites-nous comment vous vous sentez...',
+    'patient.book': 'Prendre rendez-vous',
+    'patient.history': 'Historique médical',
+    'doctor.patients': 'Liste des patients',
+    'doctor.ai.title': 'Assistant Médical IA Avancé',
+    'doctor.ai.conditions': 'Considérations Médicales Possibles',
+    'doctor.ai.steps': 'Prochaines Étapes Suggérées',
+    'doctor.ai.confidence': 'Niveau de Confiance',
+    'doctor.ai.disclaimer': '⚠️ POUR MÉDECINS AGRÉÉS UNIQUEMENT. Pas pour diagnostic final ou ordonnances. Utilisez prudemment.',
+    'doctor.prescribe': 'Rédiger une ordonnance',
+    'doctor.request_lab': 'Demander un test labo',
+    'doctor.request_rad': 'Demander une radiologie',
+    'pharma.prescriptions': 'Ordonnances en attente',
+    'pharma.verify': 'Vérifier QR',
+    'pharma.confirm': 'Confirmer la livraison',
+    'lab.pending': 'Tests en attente',
+    'lab.upload': 'Télécharger les résultats',
+    'lab.attach': 'Joindre au patient',
+    'stats.patients': 'Total patients',
+    'stats.appointments': "Rendez-vous aujourd'hui",
+    'stats.prescriptions': 'Ordonnances actives',
+    'stats.tests': 'Tests en attente',
+  },
+  ar: {
+    'app.name': 'MediFlow AI',
+    'app.tagline': 'رعاية صحية ذكية، مبسّطة',
+    'app.description': 'منصة رعاية صحية من الجيل التالي مدعومة بالذكاء الاصطناعي تربط المرضى والأطباء والصيادلة ومحترفي المختبرات.',
+    'nav.home': 'الرئيسية',
+    'nav.features': 'الميزات',
+    'nav.about': 'حول',
+    'nav.login': 'تسجيل الدخول',
+    'nav.register': 'ابدأ الآن',
+    'nav.dashboard': 'لوحة التحكم',
+    'nav.logout': 'تسجيل الخروج',
+    'landing.hero.title': 'مستقبل',
+    'landing.hero.highlight': 'الرعاية الصحية',
+    'landing.hero.subtitle': 'تشخيصات مدعومة بالذكاء الاصطناعي، تعاون سلس، ورعاية تتمحور حول المريض — كل ذلك في منصة واحدة.',
+    'landing.cta': 'ابدأ مجاناً',
+    'landing.cta2': 'شاهد العرض',
+    'landing.feature1.title': 'تحليل بالذكاء الاصطناعي',
+    'landing.feature1.desc': 'خوارزميات متقدمة تساعد الأطباء باقتراحات التشخيص.',
+    'landing.feature2.title': 'وصفات رقمية',
+    'landing.feature2.desc': 'بدون ورق، آمنة، ومتاحة فوراً مع التحقق بـ QR.',
+    'landing.feature3.title': 'تكامل المختبر',
+    'landing.feature3.desc': 'طلب فحوصات وتوصيل نتائج سلس بين الأطباء والتقنيين.',
+    'landing.feature4.title': 'دعم متعدد اللغات',
+    'landing.feature4.desc': 'دعم كامل للإنجليزية والفرنسية والعربية مع تخطيط RTL.',
+    'auth.login': 'تسجيل الدخول',
+    'auth.register': 'إنشاء حساب',
+    'auth.email': 'البريد الإلكتروني',
+    'auth.password': 'كلمة المرور',
+    'auth.name': 'الاسم الكامل',
+    'auth.age': 'العمر',
+    'auth.role': 'أنا...',
+    'auth.role.patient': 'مريض',
+    'auth.role.doctor': 'طبيب',
+    'auth.role.pharmacist': 'صيدلي',
+    'auth.role.lab': 'تقني مختبر',
+    'auth.role.radiology': 'تقني أشعة',
+    'auth.submit': 'متابعة',
+    'auth.switch.login': 'لديك حساب بالفعل؟',
+    'auth.switch.register': 'ليس لديك حساب؟',
+    'dashboard.welcome': 'مرحباً بعودتك',
+    'dashboard.overview': 'نظرة عامة',
+    'dashboard.appointments': 'المواعيد',
+    'dashboard.prescriptions': 'الوصفات',
+    'dashboard.reports': 'التقارير',
+    'dashboard.patients': 'المرضى',
+    'dashboard.symptoms': 'الأعراض',
+    'dashboard.ai_panel': 'مساعد الذكاء الاصطناعي',
+    'dashboard.lab_requests': 'طلبات المختبر',
+    'dashboard.radiology': 'الأشعة',
+    'patient.symptoms.title': 'صف أعراضك',
+    'patient.symptoms.placeholder': 'أخبرنا كيف تشعر...',
+    'patient.book': 'حجز موعد',
+    'patient.history': 'التاريخ الطبي',
+    'doctor.patients': 'قائمة المرضى',
+    'doctor.ai.title': 'مساعد الطبيب الذكي المتقدم',
+    'doctor.ai.conditions': 'اعتبارات طبية محتملة',
+    'doctor.ai.steps': 'الخطوات التالية المقترحة',
+    'doctor.ai.confidence': 'مستوى الثقة',
+    'doctor.ai.disclaimer': '⚠️ مخصص للأطباء المرخصين فقط. ليس للتشخيص النهائي أو الوصفات الطبية. استخدم بحذر.',
+    'doctor.prescribe': 'كتابة وصفة طبية',
+    'doctor.request_lab': 'طلب فحص مخبري',
+    'doctor.request_rad': 'طلب أشعة',
+    'pharma.prescriptions': 'وصفات معلقة',
+    'pharma.verify': 'تحقق من QR',
+    'pharma.confirm': 'تأكيد التسليم',
+    'lab.pending': 'فحوصات معلقة',
+    'lab.upload': 'تحميل النتائج',
+    'lab.attach': 'إرفاق بالمريض',
+    'stats.patients': 'إجمالي المرضى',
+    'stats.appointments': 'مواعيد اليوم',
+    'stats.prescriptions': 'وصفات نشطة',
+    'stats.tests': 'فحوصات معلقة',
+  },
+};
+
+// zustand store – install zustand or use a lightweight alternative
+// Using a simple React context approach instead to avoid extra dependency
+
+let currentLang: Lang = 'en';
+const listeners = new Set<() => void>();
+
+export function getLang(): Lang {
+  return currentLang;
+}
+
+export function setLang(l: Lang) {
+  currentLang = l;
+  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = l;
+  listeners.forEach(fn => fn());
+}
+
+export function t(key: string): string {
+  return translations[currentLang]?.[key] ?? translations.en[key] ?? key;
+}
+
+export function getDir(): 'ltr' | 'rtl' {
+  return currentLang === 'ar' ? 'rtl' : 'ltr';
+}
+
+export function subscribe(fn: () => void) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+// React hook
+import { useSyncExternalStore } from 'react';
+
+export function useI18n() {
+  const lang = useSyncExternalStore(subscribe, getLang, getLang);
+  return { lang, setLang, t, dir: getDir() };
+}
