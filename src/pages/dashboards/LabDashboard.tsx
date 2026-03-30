@@ -93,7 +93,7 @@ export default function LabDashboard() {
     
     setIsSaving(true);
     try {
-      const apiKey = (import.meta as any).env.VITE_GROQ_API_KEY;
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
       const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -229,7 +229,7 @@ export default function LabDashboard() {
 
         // AI Summary specifically for technicians
         if (isVision || (extractedText && extractedText.length > 50)) {
-          const apiKey = (import.meta as any).env.VITE_GROQ_API_KEY;
+          const apiKey = import.meta.env.VITE_GROQ_API_KEY;
           const messages = [
             { 
               role: "system", 

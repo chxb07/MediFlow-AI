@@ -181,7 +181,7 @@ export default function DoctorDashboard() {
         throw new Error("Insufficient data extracted for analysis.");
       }
 
-      const apiKey = (import.meta as any).env.VITE_GROQ_API_KEY;
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
       
       const messages = [
         { 
