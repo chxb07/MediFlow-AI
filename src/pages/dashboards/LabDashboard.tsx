@@ -259,7 +259,7 @@ export default function LabDashboard() {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              model: isVision ? "meta-llama/llama-4-scout-17b-16e-instruct" : "llama-3.3-70b-versatile",
+              model: isVision ? "llama-3.2-11b-vision-preview" : "llama-3.3-70b-versatile",
               messages,
               temperature: 0.1,
               max_tokens: 200
@@ -458,19 +458,7 @@ export default function LabDashboard() {
                   }}
                   className="cursor-pointer"
                 />
-                <Button 
-                  size="sm" 
-                  variant="secondary" 
-                  type="button"
-                  onClick={(e) => {
-                    const input = (e.currentTarget.parentElement?.querySelector('input')) as any;
-                    if (input?._extractedText) generateAISummary(input._extractedText);
-                  }}
-                  disabled={!file || isSaving}
-                >
-                  <Brain className="h-3 w-3 me-1" />
-                  AI Sync
-                </Button>
+
               </div>
               <p className="text-[10px] text-muted-foreground">Upload the official signed report for AI analysis.</p>
             </div>

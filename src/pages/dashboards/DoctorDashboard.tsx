@@ -212,7 +212,7 @@ export default function DoctorDashboard() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: isVision ? "meta-llama/llama-4-scout-17b-16e-instruct" : "llama-3.3-70b-versatile",
+          model: isVision ? "llama-3.2-11b-vision-preview" : "llama-3.3-70b-versatile",
           messages,
           temperature: 0.2,
           max_tokens: 1200
