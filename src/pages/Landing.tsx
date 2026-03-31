@@ -99,15 +99,7 @@ export default function Landing() {
                   <ArrowRight className="ms-2 h-4 w-4" />
                 </Button>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full text-base px-8 h-12 border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all"
-                >
-                  {t('landing.cta2')}
-                </Button>
-              </motion.div>
+
             </motion.div>
 
             {/* Hero Image */}
@@ -242,7 +234,7 @@ export default function Landing() {
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex -space-x-2">
-                {[0,1,2,3,4].map(i => (
+                {[0, 1, 2, 3, 4].map(i => (
                   <div key={i} className="w-10 h-10 rounded-full gradient-primary border-2 border-background flex items-center justify-center">
                     <Users className="h-4 w-4 text-white" />
                   </div>
@@ -251,7 +243,7 @@ export default function Landing() {
               <div className="text-left">
                 <p className="font-semibold text-sm">Join 200+ clinics already using MediFlow AI</p>
                 <div className="flex items-center gap-1 mt-1">
-                  {[1,2,3,4,5].map(i => (
+                  {[1, 2, 3, 4, 5].map(i => (
                     <span key={i} className="text-warning text-xs">★</span>
                   ))}
                   <span className="text-muted-foreground text-xs ms-1">4.9/5 rating</span>
