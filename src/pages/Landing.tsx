@@ -49,7 +49,7 @@ export default function Landing() {
         <div className="orb orb-violet absolute bottom-0 -left-20 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] animate-float-delay" />
         <div className="orb orb-emerald absolute top-1/2 left-1/2 -translate-x-1/2 w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] animate-float-slow" />
 
-        <div className="relative container mx-auto px-4 pt-16 pb-12 md:pt-36 md:pb-24">
+        <div className="relative container mx-auto px-4 pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-32 md:pb-24">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="hidden"
