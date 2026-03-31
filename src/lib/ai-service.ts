@@ -36,6 +36,19 @@ export interface PatientAnalysis {
   suggested_medications: SuggestedMedication[];
 }
 
+export interface MedicationSafetyResult {
+  is_safe: boolean;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  findings: string;
+  recommendations: string[];
+  interactions: Array<{
+    med_a: string;
+    med_b: string;
+    description: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+  }>;
+}
+
 export interface PatientData {
   age: number;
   gender: 'male' | 'female';
@@ -158,6 +171,81 @@ Analyze this data and return ONLY a valid JSON object matching this structure:
     return JSON.parse(content) as PatientAnalysis;
   } catch (error) {
     console.error("AI Analysis Error:", error);
+    throw error;
+  }
+}
+
+export async function analyzeMedicationSafety(
+  newMeds: string[],
+  history: { prescriptions: any[] },
+  patientInfo: { age: number; gender: string; symptoms: string }
+): Promise<MedicationSafetyResult> {
+  const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+  if (!apiKey) throw new Error("API configuration missing");
+
+  const pastMeds = history.prescriptions.flatMap(p => p.medications);
+
+  const prompt = `
+PATIENT INFO:
+Age: ${patientInfo.age}
+Gender: ${patientInfo.gender}
+Current Symptoms/Condition: ${patientInfo.symptoms}
+
+NEW MEDICATIONS TO PRESCRIBE:
+${newMeds.join(', ')}
+
+PAST/CURRENT MEDICATIONS:
+${pastMeds.length > 0 ? pastMeds.join(', ') : 'None'}
+
+INSTRUCTION:
+Analyze the safety of the NEW MEDICATIONS. 
+1. Check for drug-drug interactions between the new medications themselves.
+2. Check for interactions between NEW medications and PAST/CURRENT medications.
+3. Check for contraindications based on the patient's age and symptoms.
+4. Flag any high dosages or frequency concerns if common.
+
+Return ONLY a valid JSON object:
+{
+  "is_safe": boolean,
+  "severity": "low | medium | high | critical",
+  "findings": "A clear, professional summary of the safety analysis.",
+  "recommendations": ["clinical suggestion 1", "clinical suggestion 2"],
+  "interactions": [
+    { "med_a": "drug 1", "med_b": "drug 2", "description": "why they interact", "severity": "low | medium | high | critical" }
+  ]
+}
+`;
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { 
+            role: "system", 
+            content: "You are a senior clinical pharmacist and safety expert. Your goal is to identify potential medication risks. Be precise, evidence-based, and conservative. Do not address the patient." 
+          },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.1,
+        response_format: { type: "json_object" }
+      })
+    });
+
+    if (!response.ok) throw new Error("Failed to consult AI Safety Service");
+
+    const json = await response.json();
+    const content = json.choices[0]?.message?.content;
+    if (!content) throw new Error("Empty safety report");
+
+    return JSON.parse(content) as MedicationSafetyResult;
+  } catch (error) {
+    console.error("Medication Safety Analysis Error:", error);
     throw error;
   }
 }

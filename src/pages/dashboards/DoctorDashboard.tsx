@@ -10,7 +10,12 @@ import {
   ChevronRight, Lightbulb, ClipboardCheck, TrendingUp, ShieldAlert,
   Loader2, Pill, Paperclip
 } from 'lucide-react';
-import { PatientAnalysis, analyzePatientData } from '@/lib/ai-service';
+import { 
+  PatientAnalysis, 
+  analyzePatientData, 
+  analyzeMedicationSafety, 
+  MedicationSafetyResult 
+} from '@/lib/ai-service';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/lib/auth';
 import { Upload, Scan, Zap, Info, Trash2, CheckCircle2 } from 'lucide-react';
@@ -236,6 +241,8 @@ export default function DoctorDashboard() {
   const [meds, setMeds] = useState('');
   const [instructions, setInstructions] = useState('');
   const [isSavingPrescription, setIsSavingPrescription] = useState(false);
+  const [isCheckingSafety, setIsCheckingSafety] = useState(false);
+  const [safetyResult, setSafetyResult] = useState<MedicationSafetyResult | null>(null);
   const [stats, setStats] = useState([
     { label: t('stats.patients'), value: '0', icon: Users, color: 'text-primary' },
     { label: t('stats.appointments'), value: '0', icon: ClipboardCheck, color: 'text-success' },
@@ -399,6 +406,13 @@ export default function DoctorDashboard() {
 
   const handlePrescribe = async () => {
     if (!selectedPatient) return;
+    
+    // Auto-check safety if not already checked or if meds changed
+    if (!safetyResult && meds.trim()) {
+      const confirmed = await handleCheckSafety();
+      if (!confirmed) return; 
+    }
+
     setIsSavingPrescription(true);
     try {
       const { error } = await supabase
@@ -418,6 +432,7 @@ export default function DoctorDashboard() {
       setIsPrescribing(false);
       setMeds('');
       setInstructions('');
+      setSafetyResult(null);
     } catch (error: any) {
       toast({
         title: "Failed to save prescription",
@@ -426,6 +441,43 @@ export default function DoctorDashboard() {
       });
     } finally {
       setIsSavingPrescription(false);
+    }
+  };
+
+  const handleCheckSafety = async () => {
+    if (!selectedPatient || !meds.trim()) return false;
+    
+    setIsCheckingSafety(true);
+    try {
+      const result = await analyzeMedicationSafety(
+        meds.split(',').map(m => m.trim()),
+        history,
+        {
+          age: selectedPatient.age,
+          gender: 'unknown', // Profile doesn't explicitly store gender yet in some paths
+          symptoms: selectedPatient.symptoms
+        }
+      );
+      setSafetyResult(result);
+      
+      if (result.severity === 'critical') {
+        toast({
+          title: "Critical Safety Alert",
+          description: "Dangerous drug interaction detected. Please review immediately.",
+          variant: "destructive"
+        });
+      }
+
+      return result.is_safe || result.severity !== 'critical';
+    } catch (error: any) {
+      toast({
+        title: "Safety Check Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      return false;
+    } finally {
+      setIsCheckingSafety(false);
     }
   };
 
@@ -953,14 +1005,17 @@ export default function DoctorDashboard() {
           <DialogHeader>
             <DialogTitle>Write Prescription - {selectedPatient?.name}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto px-1 custom-scrollbar">
             <div className="grid gap-2">
               <Label htmlFor="meds">Medications (comma separated)</Label>
               <Input
                 id="meds"
                 placeholder="e.g. Paracetamol 500mg, Amoxicillin 250mg"
                 value={meds}
-                onChange={(e) => setMeds(e.target.value)}
+                onChange={(e) => {
+                  setMeds(e.target.value);
+                  setSafetyResult(null);
+                }}
               />
             </div>
             <div className="grid gap-2">
@@ -972,16 +1027,71 @@ export default function DoctorDashboard() {
                 onChange={(e) => setInstructions(e.target.value)}
               />
             </div>
+
+            {/* Safety Result Display */}
+            {isCheckingSafety && (
+              <div className="flex items-center justify-center py-4 text-xs text-muted-foreground animate-pulse">
+                <ShieldAlert className="h-4 w-4 animate-spin me-2 text-primary" />
+                AI Clinical Safety Analysis in progress...
+              </div>
+            )}
+
+            {safetyResult && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-3 rounded-xl border ${
+                  safetyResult.severity === 'critical' ? 'bg-destructive/10 border-destructive/20' :
+                  safetyResult.severity === 'high' ? 'bg-warning/10 border-warning/20' :
+                  'bg-success/10 border-success/20'
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <ShieldAlert className={`h-4 w-4 ${
+                    safetyResult.severity === 'critical' || safetyResult.severity === 'high' ? 'text-destructive' : 'text-success'
+                  }`} />
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    {safetyResult.severity} Risk Analysis
+                  </span>
+                </div>
+                <p className="text-xs mb-2 leading-relaxed">{safetyResult.findings}</p>
+                {safetyResult.recommendations.length > 0 && (
+                  <ul className="text-[10px] space-y-1">
+                    {safetyResult.recommendations.map((r, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="me-1.5 text-primary">•</span>
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </motion.div>
+            )}
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsPrescribing(false)}>Cancel</Button>
-            <Button 
-              className="gradient-primary" 
-              onClick={handlePrescribe}
-              disabled={isSavingPrescription || !meds.trim()}
-            >
-              {isSavingPrescription ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save Prescription'}
-            </Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            {!safetyResult && (
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="text-xs h-9"
+                onClick={handleCheckSafety}
+                disabled={isCheckingSafety || !meds.trim()}
+              >
+                {isCheckingSafety ? <Loader2 className="h-3 w-3 animate-spin me-2" /> : <ShieldAlert className="h-3 w-3 me-2" />}
+                Check Safety
+              </Button>
+            )}
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button variant="outline" className="flex-1 sm:flex-none" onClick={() => setIsPrescribing(false)}>Cancel</Button>
+              <Button 
+                className={`flex-1 sm:flex-none ${safetyResult?.severity === 'critical' ? 'bg-destructive hover:bg-destructive/90' : 'gradient-primary'}`}
+                onClick={handlePrescribe}
+                disabled={isSavingPrescription || !meds.trim() || isCheckingSafety}
+              >
+                {isSavingPrescription ? <Loader2 className="h-4 w-4 animate-spin" /> : 
+                 safetyResult?.severity === 'critical' ? 'Override & Save' : 'Save Prescription'}
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
