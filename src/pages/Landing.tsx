@@ -45,11 +45,11 @@ export default function Landing() {
         <div className="absolute inset-0 grid-bg opacity-40" />
 
         {/* Floating orbs */}
-        <div className="orb orb-cyan absolute top-10 -right-32 w-[600px] h-[600px] animate-float" />
-        <div className="orb orb-violet absolute bottom-0 -left-32 w-[500px] h-[500px] animate-float-delay" />
-        <div className="orb orb-emerald absolute top-1/2 left-1/2 -translate-x-1/2 w-[300px] h-[300px] animate-float-slow" />
+        <div className="orb orb-cyan absolute top-10 -right-20 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] animate-float" />
+        <div className="orb orb-violet absolute bottom-0 -left-20 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] animate-float-delay" />
+        <div className="orb orb-emerald absolute top-1/2 left-1/2 -translate-x-1/2 w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] animate-float-slow" />
 
-        <div className="relative container mx-auto px-4 pt-24 pb-16 md:pt-36 md:pb-24">
+        <div className="relative container mx-auto px-4 pt-16 pb-12 md:pt-36 md:pb-24">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="hidden"
@@ -141,10 +141,10 @@ export default function Landing() {
       </section>
 
       {/* ── Stats ─────────────────────────────────────────── */}
-      <section className="py-20 border-y border-border/40 relative overflow-hidden">
+      <section className="py-12 md:py-20 border-y border-border/40 relative overflow-hidden">
         <div className="absolute inset-0 grid-bg opacity-20" />
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -167,8 +167,8 @@ export default function Landing() {
       </section>
 
       {/* ── Features ──────────────────────────────────────── */}
-      <section className="py-28 relative overflow-hidden">
-        <div className="orb orb-cyan absolute top-0 right-0 w-[400px] h-[400px] animate-float opacity-60" />
+      <section className="py-16 md:py-28 relative overflow-hidden">
+        <div className="orb orb-cyan absolute top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px] animate-float opacity-60" />
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -188,7 +188,7 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f, i) => (
               <GlassCard
                 key={f.titleKey}
@@ -214,10 +214,9 @@ export default function Landing() {
       </section>
 
       {/* ── Trust ─────────────────────────────────────────── */}
-      <section className="py-28 relative overflow-hidden">
+      <section className="py-16 md:py-28 relative overflow-hidden">
         <div className="absolute inset-0 gradient-hero" />
         <div className="absolute inset-0 grid-bg opacity-30" />
-        <div className="orb orb-violet absolute bottom-0 left-1/4 w-[500px] h-[500px] animate-float-delay opacity-50" />
 
         <div className="relative container mx-auto px-4 text-center">
           <motion.div

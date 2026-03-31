@@ -12,10 +12,18 @@ export default {
         "2xl": "1400px",
       },
     },
+    screens: {
+      'xs': '475px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       fontFamily: {
-        display: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        display: ['Syne', 'sans-serif'],
+        body: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -97,8 +105,8 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px -5px hsl(199 89% 48% / 0.3)" },
-          "50%": { boxShadow: "0 0 40px -5px hsl(199 89% 48% / 0.5)" },
+          "0%, 100%": { boxShadow: "0 0 20px -5px hsl(194 100% 45% / 0.35)" },
+          "50%": { boxShadow: "0 0 60px -5px hsl(194 100% 45% / 0.6), 0 0 100px -20px hsl(262 83% 68% / 0.3)" },
         },
       },
       animation: {

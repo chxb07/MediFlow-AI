@@ -124,7 +124,7 @@ export default function Auth() {
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
-                        className="grid grid-cols-2 gap-4"
+                        className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-4"
                       >
                         <div className="space-y-1.5">
                           <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('auth.name')}</Label>
