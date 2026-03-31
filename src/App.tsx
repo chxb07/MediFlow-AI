@@ -13,7 +13,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light" storageKey="mediflow-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="mediflow-ui-theme">
       <TooltipProvider>
       <Toaster />
       <Sonner />
