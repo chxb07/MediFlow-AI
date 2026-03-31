@@ -26,21 +26,21 @@ export default function Header() {
           <LanguageSwitcher />
           {user ? (
             <>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')}>
-                <LayoutDashboard className="h-4 w-4 me-1" />
-                {t('nav.dashboard')}
+              <Button variant="ghost" size="sm" className="px-2 sm:px-3 text-xs sm:text-sm" onClick={() => navigate('/dashboard')}>
+                <LayoutDashboard className="h-4 w-4 sm:me-1" />
+                <span className="hidden sm:inline">{t('nav.dashboard')}</span>
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => { logout(); navigate('/'); }}>
-                <LogOut className="h-4 w-4 me-1" />
-                {t('nav.logout')}
+              <Button variant="ghost" size="sm" className="px-2 sm:px-3 text-xs sm:text-sm" onClick={() => { logout(); navigate('/'); }}>
+                <LogOut className="h-4 w-4 sm:me-1" />
+                <span className="hidden sm:inline">{t('nav.logout')}</span>
               </Button>
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+              <Button variant="ghost" size="sm" className="px-2 sm:px-3 text-xs sm:text-sm" onClick={() => navigate('/auth')}>
                 {t('nav.login')}
               </Button>
-              <Button size="sm" className="gradient-primary text-primary-foreground border-0" onClick={() => navigate('/auth?mode=register')}>
+              <Button size="sm" className="gradient-primary text-primary-foreground border-0 px-2 sm:px-3 text-xs sm:text-sm" onClick={() => navigate('/auth?mode=register')}>
                 {t('nav.register')}
               </Button>
             </>

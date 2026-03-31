@@ -56,7 +56,7 @@ export default function Landing() {
               AI-Powered Healthcare Platform
             </motion.div>
 
-            <motion.h1 variants={fadeUp} custom={1} className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
+            <motion.h1 variants={fadeUp} custom={1} className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
               {t('landing.hero.title')}{' '}
               <span className="gradient-text">{t('landing.hero.highlight')}</span>
             </motion.h1>

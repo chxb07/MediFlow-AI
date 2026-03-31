@@ -158,13 +158,13 @@ export default function Auth() {
                   {isRegister && (
                     <div className="space-y-2">
                       <Label>{t('auth.role')}</Label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {roles.map(r => (
                           <button
                             type="button"
                             key={r.value}
                             onClick={() => setSelectedRole(r.value)}
-                            className={`flex items-center gap-2 p-3 rounded-lg text-sm font-medium transition-all border ${
+                            className={`flex items-center gap-2 p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm font-medium transition-all border ${
                               selectedRole === r.value
                                 ? 'border-primary bg-primary/10 text-primary'
                                 : 'border-border bg-background text-muted-foreground hover:border-primary/30'
