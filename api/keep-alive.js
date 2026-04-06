@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
   const supabaseUrl = process.env.VITE_SUPABASE_URL
   const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
 
@@ -14,8 +14,6 @@ export default async function handler(req: any, res: any) {
   const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
   try {
-    // Perform a minimal query to keep the database active.
-    // The 'profiles' table has a public SELECT policy.
     const { error } = await supabase
       .from('profiles')
       .select('id')
@@ -25,10 +23,10 @@ export default async function handler(req: any, res: any) {
 
     return res.status(200).json({ 
       success: true, 
-      message: 'Supabase keep-alive ping successful',
+      message: 'Supabase keep-alive ping successful (JS)',
       timestamp: new Date().toISOString()
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Keep-alive failed:', error.message)
     return res.status(500).json({ 
       success: false, 

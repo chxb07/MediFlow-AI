@@ -1,17 +1,18 @@
 {
-    "routes": [
+    "rewrites": [
         {
-            "handle": "filesystem"
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
         },
         {
-            "src": "/.*",
-            "dest": "/"
+            "source": "/(.*)",
+            "destination": "/"
         }
     ],
     "crons": [
         {
             "path": "/api/keep-alive",
-            "schedule": "*/5 * * * *"
+            "schedule": "0 * * * *"
         }
     ]
 }
